@@ -1,0 +1,14 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+tradetool/obj/Debug/tradetool.csprojResolveAssemblyReference.cache
+tradetool/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+.vs/tradetool/v15/Server/sqlite3/storage.ide-shm
+.vs/tradetool/v15/.suo
+tradetool/obj/Debug/tradetool.csproj.CoreCompileInputs.cache
+.vs/tradetool/v15/Server/sqlite3/storage.ide-wal
+.vs/tradetool/v15/Server/sqlite3/db.lock
+tradetool/obj/Debug/tradetool.csproj.GenerateResource.Cache
+.vs/tradetool/v15/Server/sqlite3/storage.ide
+*.exe
+tradetool/bin/
+tradetool/obj/
+packages/
