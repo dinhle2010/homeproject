@@ -35,6 +35,7 @@ namespace tradetool
 
         private void Start(object sender, EventArgs e)
         {
+            lblStatus.Text = DateTime.Now.ToString();
             using (var repo = new DapperRepository(new SqlConnection(Connectionstring)))
             {
                 try
@@ -49,12 +50,12 @@ namespace tradetool
                     {
                         objStop = repo.Connection.Query<StopLimit>("select * from dbo.ExchangeOrder").First();
                     }
-                    catch { objStop = null; }
+                    catch(Exception ex) { objStop = null; }
                     
                     if (objStop == null)
                     {
                         string query = "INSERT INTO dbo.ExchangeOrder(PairExchange,CurrentPrice,LimitPrice,StopPrice,Type,Status) VALUES";
-                        query += "(@PairExchange, @CurrentPrice, @LimitPrice, @StopPrice, @Type)";
+                        query += "(@PairExchange, @CurrentPrice, @LimitPrice, @StopPrice, @Type,@Status)";
                         repo.Connection.Execute(query
                             , new
                             {
@@ -81,7 +82,7 @@ namespace tradetool
                     }
 
                 }
-                catch
+                catch(Exception ex)
                 {
                 }
                 finally
@@ -100,13 +101,13 @@ namespace tradetool
             lblStatus.Text = "Start Time: " + DateTime.Now.ToString();
             timer1.Tick += new EventHandler(Start);
             // Sets the timer interval to 5 seconds.
-            timer1.Interval = 5000;
+            timer1.Interval = 10000;
             timer1.Start();
         }
 
         private decimal GetPrice()
         {
-            var rootPolo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Polo>>(Helpers.GetdataViaproxy("https://poloniex.com/public?command=returnOrderBook&currencyPair=USDT_XRP&depth=10"));
+            var rootPolo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Polo>>(Helpers.GetdataViaproxy("https://poloniex.com/public?command=returnTradeHistory&currencyPair=USDT_XRP&depth=10"));
             return decimal.Parse(rootPolo.First().rate);
         }
 

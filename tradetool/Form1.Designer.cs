@@ -219,7 +219,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 97F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 102F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 77F));
             this.tableLayoutPanel2.Controls.Add(this.btnStop, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnStart, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnAuto, 2, 0);
@@ -238,7 +238,7 @@
             // btnStop
             // 
             this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStop.Location = new System.Drawing.Point(647, 3);
+            this.btnStop.Location = new System.Drawing.Point(646, 3);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(91, 35);
             this.btnStop.TabIndex = 1;
@@ -248,7 +248,7 @@
             // btnStart
             // 
             this.btnStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStart.Location = new System.Drawing.Point(529, 3);
+            this.btnStart.Location = new System.Drawing.Point(528, 3);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(112, 35);
             this.btnStart.TabIndex = 2;
@@ -258,7 +258,7 @@
             // btnAuto
             // 
             this.btnAuto.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAuto.Location = new System.Drawing.Point(400, 3);
+            this.btnAuto.Location = new System.Drawing.Point(399, 3);
             this.btnAuto.Name = "btnAuto";
             this.btnAuto.Size = new System.Drawing.Size(123, 35);
             this.btnAuto.TabIndex = 6;
@@ -270,7 +270,7 @@
             this.btnClear.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnClear.Location = new System.Drawing.Point(253, 3);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(141, 35);
+            this.btnClear.Size = new System.Drawing.Size(140, 35);
             this.btnClear.TabIndex = 5;
             this.btnClear.Text = "Clear";
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -315,7 +315,7 @@
             // btnLastRow
             // 
             this.btnLastRow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLastRow.Location = new System.Drawing.Point(744, 3);
+            this.btnLastRow.Location = new System.Drawing.Point(743, 3);
             this.btnLastRow.Name = "btnLastRow";
             this.btnLastRow.Size = new System.Drawing.Size(96, 35);
             this.btnLastRow.TabIndex = 8;
@@ -325,9 +325,9 @@
             // btnBalance
             // 
             this.btnBalance.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnBalance.Location = new System.Drawing.Point(846, 3);
+            this.btnBalance.Location = new System.Drawing.Point(845, 3);
             this.btnBalance.Name = "btnBalance";
-            this.btnBalance.Size = new System.Drawing.Size(71, 35);
+            this.btnBalance.Size = new System.Drawing.Size(72, 35);
             this.btnBalance.TabIndex = 9;
             this.btnBalance.Text = "Balance";
             this.btnBalance.UseVisualStyleBackColor = true;
@@ -339,7 +339,7 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.83431F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.16569F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 328F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 329F));
             this.tableLayoutPanel4.Controls.Add(this.lblStartTime, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblGetData, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.cmbCurrencyPair, 1, 0);
@@ -358,7 +358,7 @@
             this.lblStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStartTime.Location = new System.Drawing.Point(3, 0);
             this.lblStartTime.Name = "lblStartTime";
-            this.lblStartTime.Size = new System.Drawing.Size(209, 31);
+            this.lblStartTime.Size = new System.Drawing.Size(208, 31);
             this.lblStartTime.TabIndex = 0;
             // 
             // lblGetData
@@ -366,9 +366,9 @@
             this.lblGetData.AutoSize = true;
             this.lblGetData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGetData.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGetData.Location = new System.Drawing.Point(594, 0);
+            this.lblGetData.Location = new System.Drawing.Point(593, 0);
             this.lblGetData.Name = "lblGetData";
-            this.lblGetData.Size = new System.Drawing.Size(323, 31);
+            this.lblGetData.Size = new System.Drawing.Size(324, 31);
             this.lblGetData.TabIndex = 1;
             this.lblGetData.Text = "label2";
             // 
@@ -377,7 +377,7 @@
             this.cmbCurrencyPair.DisplayMember = "Name";
             this.cmbCurrencyPair.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCurrencyPair.FormattingEnabled = true;
-            this.cmbCurrencyPair.Location = new System.Drawing.Point(218, 3);
+            this.cmbCurrencyPair.Location = new System.Drawing.Point(217, 3);
             this.cmbCurrencyPair.Name = "cmbCurrencyPair";
             this.cmbCurrencyPair.Size = new System.Drawing.Size(258, 21);
             this.cmbCurrencyPair.TabIndex = 2;

@@ -70,7 +70,7 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.64634F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.35366F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 194F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 195F));
             this.tableLayoutPanel2.Controls.Add(this.btnStart, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.button2, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
@@ -85,7 +85,7 @@
             // btnStart
             // 
             this.btnStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStart.Location = new System.Drawing.Point(472, 3);
+            this.btnStart.Location = new System.Drawing.Point(471, 3);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(179, 30);
             this.btnStart.TabIndex = 1;
@@ -96,9 +96,9 @@
             // button2
             // 
             this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button2.Location = new System.Drawing.Point(657, 3);
+            this.button2.Location = new System.Drawing.Point(656, 3);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(189, 30);
+            this.button2.Size = new System.Drawing.Size(190, 30);
             this.button2.TabIndex = 2;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
@@ -115,13 +115,13 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(463, 30);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(462, 30);
             this.tableLayoutPanel3.TabIndex = 3;
             // 
             // txtDeltaValue
             // 
             this.txtDeltaValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDeltaValue.Location = new System.Drawing.Point(254, 3);
+            this.txtDeltaValue.Location = new System.Drawing.Point(253, 3);
             this.txtDeltaValue.Name = "txtDeltaValue";
             this.txtDeltaValue.Size = new System.Drawing.Size(206, 20);
             this.txtDeltaValue.TabIndex = 0;
@@ -133,7 +133,7 @@
             this.lblStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatus.Location = new System.Drawing.Point(3, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(245, 30);
+            this.lblStatus.Size = new System.Drawing.Size(244, 30);
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "Status";
             // 
