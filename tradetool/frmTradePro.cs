@@ -9,8 +9,10 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tradetool.Utilities;
 
 namespace tradetool
 {
@@ -35,74 +37,111 @@ namespace tradetool
 
         private void Start(object sender, EventArgs e)
         {
-            lblStatus.Text = DateTime.Now.ToString();
-            using (var repo = new DapperRepository(new SqlConnection(Connectionstring)))
+            try
             {
-                try
+                while (true)
                 {
+                    var second = int.Parse(lblStatus.Text);
+                    if (second > 0) --second;
+                    else
+                    {
+                        second = 5;
+                        using (var repo = new DapperRepository(new SqlConnection(Connectionstring)))
+                        {
+                            var price = GetPrice();
+                            StopLimit objStop = null;
+                            try
+                            {
+                                objStop = repo.Connection.Query<StopLimit>("select * from dbo.ExchangeOrder").First();
+                            }
+                            catch (Exception ex) { objStop = null; }
+
+                            if (objStop == null)
+                            {
+                                string query = "INSERT INTO dbo.ExchangeOrder(PairExchange,CurrentPrice,LimitPrice,StopPrice,Type,Status) VALUES";
+                                query += "(@PairExchange, @CurrentPrice, @LimitPrice, @StopPrice, @Type,@Status)";
+                                repo.Connection.Execute(query
+                                    , new
+                                    {
+                                        PairExchange = "XRP_USDT",
+                                        CurrentPrice = price,
+                                        LimitPrice = price - _deltaPrice,
+                                        StopPrice = price,
+                                        Type = 1,
+                                        Status = "Is Open"
+                                    });
+                            }
+                            else if (price < objStop.CurrentPrice)
+                            {
+                                string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,LimitPrice = @LimitPrice,StopPrice=@StopPrice where ID = @ID";
+
+                                repo.Connection.Execute(query
+                                    , new
+                                    {
+                                        CurrentPrice = price,
+                                        LimitPrice = price - _deltaPrice,
+                                        StopPrice = price,
+                                        ID = objStop.ID
+                                    });
+
+                            }
+                            if (objStop != null)
+                            {
+                                var source = new List<StopLimit>();
+                                objStop.CurrentPrice = price;
+                                objStop.LimitPrice = price - _deltaPrice;
+                                objStop.StopPrice = price;
+                                source.Add(objStop);
+                                BeginInvoke(new MethodInvoker(delegate
+                                {
+                                    dataGridView1.DataSource = source.ToDataTable<StopLimit>();
+                                    dataGridView1.Refresh();
+                                }));
+                            }
+
+
+
+                        }
+                    }
                     BeginInvoke(new MethodInvoker(delegate
                     {
-                        btnStart.Enabled = false;
+                        lblStatus.Text = second.ToString();
                     }));
-                    var price = GetPrice();
-                    StopLimit objStop = null;
-                    try
-                    {
-                        objStop = repo.Connection.Query<StopLimit>("select * from dbo.ExchangeOrder").First();
-                    }
-                    catch(Exception ex) { objStop = null; }
-                    
-                    if (objStop == null)
-                    {
-                        string query = "INSERT INTO dbo.ExchangeOrder(PairExchange,CurrentPrice,LimitPrice,StopPrice,Type,Status) VALUES";
-                        query += "(@PairExchange, @CurrentPrice, @LimitPrice, @StopPrice, @Type,@Status)";
-                        repo.Connection.Execute(query
-                            , new
-                            {
-                                PairExchange = "XRP_USDT",
-                                CurrentPrice = price,
-                                LimitPrice = price - _deltaPrice,
-                                StopPrice = price,
-                                Type = 1,
-                                Status = "Is Open"
-                            });
-                    }
-                    else if (price < objStop.CurrentPrice)
-                    {
-                        string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,LimitPrice = @LimitPrice,StopPrice=@StopPrice where ID = @ID";
 
-                        repo.Connection.Execute(query
-                            , new
-                            {
-                                CurrentPrice = price,
-                                LimitPrice = price - _deltaPrice,
-                                StopPrice = price,
-                                ID = objStop.ID
-                            });
-                    }
-
+                    Thread.Sleep(1000);
                 }
-                catch(Exception ex)
-                {
-                }
-                finally
-                {
-                    BeginInvoke(new MethodInvoker(delegate
-                    {
-                        btnStart.Enabled = true;
-                    }));
-                }
+                
+                
 
             }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                //BeginInvoke(new MethodInvoker(delegate
+                //{
+                //    btnStart.Enabled = true;
+                //}));
+            }
+            
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            lblStatus.Text = "Start Time: " + DateTime.Now.ToString();
-            timer1.Tick += new EventHandler(Start);
-            // Sets the timer interval to 5 seconds.
-            timer1.Interval = 10000;
-            timer1.Start();
+
+            new Task(() =>
+            {
+                Start(null, null);
+            }).Start();
+            ////lblStatus.Text = "Start Time: " + DateTime.Now.ToString();
+            //timer1.Tick += new EventHandler(Start);
+            //// Sets the timer interval to 5 seconds.
+            //timer1.Interval = 1000;
+            //timer1.Start();
+
         }
 
         private decimal GetPrice()

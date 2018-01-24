@@ -62,16 +62,19 @@ namespace tradetool
             string fullURL = string.Format("http://207.148.66.48/api/values?" + "endpoint={0}", url.Replace("&", "[and]"));
             try
             {
-                var objAPI = new APIClient(new HttpClient());
-                using (var response = objAPI.GetWithParam(fullURL, null))
+                using (var objAPI = new APIClient(new HttpClient()))
                 {
-                    return response.Content.ReadAsStringAsync().Result;
+                    using (var response = objAPI.GetWithParam(fullURL, null))
+                    {
+                        return response.Content.ReadAsStringAsync().Result;
+                    }
                 }
+
             }
             catch (Exception ex)
             {
                 return string.Empty;
             }
-        }        
+        }
     }
 }
