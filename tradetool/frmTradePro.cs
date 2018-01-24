@@ -35,20 +35,90 @@ namespace tradetool
             _source.Columns.Add("Log");
         }
 
+        private void StopLoss()
+        {
+            bool Continue = true;
+
+            //var repo1 = new DapperRepository(new SqlConnection(Connectionstring));
+            //repo1.Connection.Query<string>("delete from dbo.ExchangeOrder");
+            while (Continue)
+            {
+                try
+                {
+                    using (var repo = new DapperRepository(new SqlConnection(Connectionstring)))
+                    {
+                        var price = GetPrice();
+                        StopLimit objStop = null;
+                        try
+                        {
+                            objStop = repo.Connection.Query<StopLimit>("select * from dbo.ExchangeOrder").First();
+                        }
+                        catch (Exception ex) { objStop = null; }
+
+                        //type = 1 : buy 
+                        if (objStop?.Status == "Is Open" && objStop.Type == "1")
+                        {
+
+                            if (price >= objStop.StopPrice)
+                            {
+                                //cập nhat trang thái về close báo đã khớp lện mua
+                                string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,Status=@Status where ID = @ID";
+
+                                repo.Connection.Execute(query
+                                    , new
+                                    {
+                                        CurrentPrice = price,
+                                        ID = objStop.ID,
+                                        Status = "Is Close"
+                                    });
+                                BeginInvoke(new MethodInvoker(delegate
+                                {
+                                    lblStatus.Text = lblStatus.Text = "đã khớp lên mua ở giá " + objStop.StopPrice;
+                                }));
+                            }
+                        }
+
+                    }
+                    Thread.Sleep(5000);
+                }
+
+                catch (Exception ex)
+                {
+                }
+                finally
+                {
+                }
+            }
+        }
         private void Start(object sender, EventArgs e)
         {
+            new Task(() =>
+            {
+                StopLoss();
+            }).Start();
+
+            bool Continue = true;
             try
             {
-                while (true)
+                //var repo1 = new DapperRepository(new SqlConnection(Connectionstring));
+                //repo1.Connection.Query<string>("delete from dbo.ExchangeOrder");
+                while (Continue)
                 {
                     var second = int.Parse(lblStatus.Text);
                     if (second > 0) --second;
                     else
                     {
-                        second = 5;
+                        second = 10;
                         using (var repo = new DapperRepository(new SqlConnection(Connectionstring)))
                         {
                             var price = GetPrice();
+                            BeginInvoke(new MethodInvoker(delegate
+                            {
+                                lblPrice.Text = price.ToString();
+                            }));
+
+                            if (price == 0)
+                                continue;
                             StopLimit objStop = null;
                             try
                             {
@@ -65,11 +135,19 @@ namespace tradetool
                                     {
                                         PairExchange = "XRP_USDT",
                                         CurrentPrice = price,
-                                        LimitPrice = price - _deltaPrice,
-                                        StopPrice = price,
+                                        LimitPrice = price + _deltaPrice,
+                                        StopPrice = price + _deltaPrice,
                                         Type = 1,
                                         Status = "Is Open"
                                     });
+                            }
+                            else if (objStop.Status == "Is Close")
+                            {
+                                Continue = false;
+                                BeginInvoke(new MethodInvoker(delegate
+                                {
+                                    lblStatus.Text = "đã khớp lên mua ở giá " + objStop.CurrentPrice;
+                                }));
                             }
                             else if (price < objStop.CurrentPrice)
                             {
@@ -79,18 +157,21 @@ namespace tradetool
                                     , new
                                     {
                                         CurrentPrice = price,
-                                        LimitPrice = price - _deltaPrice,
-                                        StopPrice = price,
+                                        LimitPrice = price + _deltaPrice,
+                                        StopPrice = price + _deltaPrice,
                                         ID = objStop.ID
                                     });
 
                             }
+                            //load data
                             if (objStop != null)
                             {
                                 var source = new List<StopLimit>();
-                                objStop.CurrentPrice = price;
-                                objStop.LimitPrice = price - _deltaPrice;
-                                objStop.StopPrice = price;
+                                try
+                                {
+                                    objStop = repo.Connection.Query<StopLimit>("select * from dbo.ExchangeOrder").First();
+                                }
+                                catch (Exception ex) { objStop = null; }
                                 source.Add(objStop);
                                 BeginInvoke(new MethodInvoker(delegate
                                 {
@@ -98,8 +179,6 @@ namespace tradetool
                                     dataGridView1.Refresh();
                                 }));
                             }
-
-
 
                         }
                     }
@@ -110,8 +189,8 @@ namespace tradetool
 
                     Thread.Sleep(1000);
                 }
-                
-                
+
+
 
             }
             catch (Exception ex)
@@ -125,9 +204,11 @@ namespace tradetool
                 //    btnStart.Enabled = true;
                 //}));
             }
-            
+
 
         }
+
+
 
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -136,18 +217,22 @@ namespace tradetool
             {
                 Start(null, null);
             }).Start();
-            ////lblStatus.Text = "Start Time: " + DateTime.Now.ToString();
-            //timer1.Tick += new EventHandler(Start);
-            //// Sets the timer interval to 5 seconds.
-            //timer1.Interval = 1000;
-            //timer1.Start();
 
         }
 
         private decimal GetPrice()
         {
-            var rootPolo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Polo>>(Helpers.GetdataViaproxy("https://poloniex.com/public?command=returnTradeHistory&currencyPair=USDT_XRP&depth=10"));
-            return decimal.Parse(rootPolo.First().rate);
+            try
+            {
+                var rootPolo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Polo>>(Helpers.GetdataViaproxy("https://poloniex.com/public?command=returnTradeHistory&currencyPair=USDT_XRP&depth=10"));
+                return decimal.Parse(rootPolo.First().rate);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+
         }
 
     }

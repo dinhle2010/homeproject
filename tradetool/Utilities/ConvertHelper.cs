@@ -22,7 +22,11 @@ namespace tradetool.Utilities
                 return 0;
             }
         }
-
+        public static long ToUnixTime(this DateTime dateTime)
+        {
+            DateTime UnixEpoch = new DateTime(1970, 1, 1);
+            return (dateTime - UnixEpoch).Ticks / TimeSpan.TicksPerMillisecond;
+        }
         public static DataTable ToDataTable<T>(this IList<T> data)
         {
             DataTable table = new DataTable();

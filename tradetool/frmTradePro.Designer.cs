@@ -43,6 +43,7 @@
             this.colStop = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cloStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblPrice = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -52,13 +53,15 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.07603F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 0);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lblPrice, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.95318F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.04682F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(855, 299);
@@ -69,24 +72,24 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.64634F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.35366F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 197F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 199F));
             this.tableLayoutPanel2.Controls.Add(this.btnStart, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.button2, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 260);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 262);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(849, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(849, 34);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // btnStart
             // 
             this.btnStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStart.Location = new System.Drawing.Point(470, 3);
+            this.btnStart.Location = new System.Drawing.Point(468, 3);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(178, 30);
+            this.btnStart.Size = new System.Drawing.Size(178, 28);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -95,9 +98,9 @@
             // button2
             // 
             this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button2.Location = new System.Drawing.Point(654, 3);
+            this.button2.Location = new System.Drawing.Point(652, 3);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(192, 30);
+            this.button2.Size = new System.Drawing.Size(194, 28);
             this.button2.TabIndex = 2;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
@@ -114,15 +117,15 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(461, 30);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(459, 28);
             this.tableLayoutPanel3.TabIndex = 3;
             // 
             // txtDeltaValue
             // 
             this.txtDeltaValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDeltaValue.Location = new System.Drawing.Point(253, 3);
+            this.txtDeltaValue.Location = new System.Drawing.Point(252, 3);
             this.txtDeltaValue.Name = "txtDeltaValue";
-            this.txtDeltaValue.Size = new System.Drawing.Size(205, 20);
+            this.txtDeltaValue.Size = new System.Drawing.Size(204, 20);
             this.txtDeltaValue.TabIndex = 0;
             this.txtDeltaValue.Text = "0.01";
             // 
@@ -133,9 +136,9 @@
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.Location = new System.Drawing.Point(3, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(244, 30);
+            this.lblStatus.Size = new System.Drawing.Size(243, 28);
             this.lblStatus.TabIndex = 1;
-            this.lblStatus.Text = "5";
+            this.lblStatus.Text = "10";
             // 
             // dataGridView1
             // 
@@ -147,9 +150,9 @@
             this.colType,
             this.cloStatus});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 23);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(849, 251);
+            this.dataGridView1.Size = new System.Drawing.Size(849, 233);
             this.dataGridView1.TabIndex = 1;
             // 
             // colPrice
@@ -187,6 +190,14 @@
             this.cloStatus.HeaderText = "Status";
             this.cloStatus.Name = "cloStatus";
             // 
+            // lblPrice
+            // 
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Location = new System.Drawing.Point(3, 0);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(0, 13);
+            this.lblPrice.TabIndex = 2;
+            // 
             // frmTradePro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,6 +207,7 @@
             this.Name = "frmTradePro";
             this.Text = "frmTradePro";
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
@@ -219,5 +231,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colStop;
         private System.Windows.Forms.DataGridViewTextBoxColumn colType;
         private System.Windows.Forms.DataGridViewTextBoxColumn cloStatus;
+        private System.Windows.Forms.Label lblPrice;
     }
 }
