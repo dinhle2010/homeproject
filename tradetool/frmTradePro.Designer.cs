@@ -72,7 +72,7 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.64634F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.35366F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 199F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 201F));
             this.tableLayoutPanel2.Controls.Add(this.btnStart, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.button2, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
@@ -87,9 +87,9 @@
             // btnStart
             // 
             this.btnStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStart.Location = new System.Drawing.Point(468, 3);
+            this.btnStart.Location = new System.Drawing.Point(467, 3);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(178, 28);
+            this.btnStart.Size = new System.Drawing.Size(177, 28);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -98,9 +98,9 @@
             // button2
             // 
             this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button2.Location = new System.Drawing.Point(652, 3);
+            this.button2.Location = new System.Drawing.Point(650, 3);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(194, 28);
+            this.button2.Size = new System.Drawing.Size(196, 28);
             this.button2.TabIndex = 2;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
@@ -117,17 +117,17 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(459, 28);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(458, 28);
             this.tableLayoutPanel3.TabIndex = 3;
             // 
             // txtDeltaValue
             // 
             this.txtDeltaValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDeltaValue.Location = new System.Drawing.Point(252, 3);
+            this.txtDeltaValue.Location = new System.Drawing.Point(251, 3);
             this.txtDeltaValue.Name = "txtDeltaValue";
             this.txtDeltaValue.Size = new System.Drawing.Size(204, 20);
             this.txtDeltaValue.TabIndex = 0;
-            this.txtDeltaValue.Text = "0.01";
+            this.txtDeltaValue.Text = "55";
             // 
             // lblStatus
             // 
@@ -136,7 +136,7 @@
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.Location = new System.Drawing.Point(3, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(243, 28);
+            this.lblStatus.Size = new System.Drawing.Size(242, 28);
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "10";
             // 

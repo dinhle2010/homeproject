@@ -59,7 +59,7 @@ namespace tradetool
         }
         public static string GetdataViaproxy(string url)
         {
-            string fullURL = string.Format("http://207.148.66.48/api/values?" + "endpoint={0}", url.Replace("&", "[and]"));
+            string fullURL = string.Format("http://207.148.66.48:800/api/values?" + "endpoint={0}", url.Replace("&", "[and]"));
             try
             {
                 using (var objAPI = new APIClient(new HttpClient()))
