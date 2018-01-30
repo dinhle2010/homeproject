@@ -21,17 +21,20 @@ namespace tradetool
     {
         private DataTable _source;
         private string Connectionstring = string.Empty;
-        private decimal _deltaPrice;
+        private decimal _deltaPriceBuy;
+        private decimal _deltaPriceSell;
         private decimal _currentPrice = 0;
         public frmTradePro()
         {
             InitializeComponent();
             Connectionstring = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            _deltaPrice = decimal.Parse(txtDeltaValue.Text);
+            _deltaPriceBuy = decimal.Parse(txtDeltaValue.Text);
+            _deltaPriceSell = decimal.Parse(txtDeltaValue.Text);
             _source = new DataTable();
             _source.Columns.Add("Price");
             _source.Columns.Add("Limit");
             _source.Columns.Add("Stop");
+            _source.Columns.Add("SellPrice");
             _source.Columns.Add("Type");
             _source.Columns.Add("Status");
             _source.Columns.Add("Log");
@@ -48,13 +51,18 @@ namespace tradetool
                     using (var repo = new DapperRepository(new SqlConnection(Connectionstring)))
                     {
                         var price = GetPrice();
+                        if (price == 0)
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
                         _currentPrice = price;
                         BeginInvoke(new MethodInvoker(delegate
                         {
                             lblPrice.Text = price.ToString();
                         }));
 
-                        
+
                         StopLimit objStop = null;
                         try
                         {
@@ -66,10 +74,10 @@ namespace tradetool
                         if (objStop?.Status == "Is Open" && objStop.Type == "1")
                         {
 
-                            if (price >= objStop.StopPrice)
+                            if (price >= objStop.BuyPrice && Configs.DeltaPercent > 0)
                             {
                                 //cập nhat trang thái về close báo đã khớp lện mua
-                                string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,Status=@Status,SellPrice=@SellPrice where ID = @ID";
+                                string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,Status=@Status,SellPrice=@SellPrice,StopSellPrice=@StopSellPrice,StopLoss=@StopLoss where ID = @ID";
 
                                 repo.Connection.Execute(query
                                     , new
@@ -77,18 +85,20 @@ namespace tradetool
                                         CurrentPrice = price,
                                         ID = objStop.ID,
                                         Status = "Is Close",
-                                        SellPrice = price + (decimal)(price * decimal.Parse((0.6 / 100).ToString()))
+                                        SellPrice = price + (decimal)(price * decimal.Parse((0.6 / 100).ToString())),
+                                        StopSellPrice = price + (decimal)(price * decimal.Parse((0.6 / 100).ToString())) + _deltaPriceSell,
+                                        StopLoss = price - (decimal)(price * decimal.Parse((0.6 / 100).ToString()))
                                     });
-                                BeginInvoke(new MethodInvoker(delegate
-                                {
-                                    lblStatus.Text = lblStatus.Text = "đã khớp lên mua ở giá " + objStop.StopPrice;
-                                }));
+                                //BeginInvoke(new MethodInvoker(delegate
+                                //{
+                                //    lblStatus.Text = lblStatus.Text = "đã khớp lên mua ở giá " + objStop.StopPrice;
+                                //}));
                             }
                         }//finish buy go to sell
                         else if (objStop?.Status == "Is Close" && objStop.Type == "1")
                         {
 
-                            if (price >= objStop.SellPrice)
+                            if (price >= objStop.SellPrice && objStop.IsPassSellPrice == true)
                             {
                                 //cập nhat trang thái về close báo đã khớp lện mua
                                 const string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,Status=@Status where ID = @ID";
@@ -102,8 +112,20 @@ namespace tradetool
                                     });
                                 BeginInvoke(new MethodInvoker(delegate
                                 {
-                                    lblStatus.Text = lblStatus.Text = "đã khớp lên mua ở giá " + objStop.StopPrice;
+                                    lblStatus.Text = lblStatus.Text = "đã khớp lên mua ở giá " + objStop.StopBuyPrice;
                                 }));
+                            }
+                            else if (price <= objStop.StopLoss)
+                            {
+                                const string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,Status=@Status where ID = @ID";
+
+                                repo.Connection.Execute(query
+                                    , new
+                                    {
+                                        CurrentPrice = price,
+                                        ID = objStop.ID,
+                                        Status = "Is StopLoss"
+                                    });
                             }
                         }
 
@@ -149,6 +171,10 @@ namespace tradetool
                             if (price == 0)
                             {
                                 second = 10;
+                                BeginInvoke(new MethodInvoker(delegate
+                                {
+                                    lblStatus.Text = "10";
+                                }));
                                 continue;
                             }
 
@@ -161,37 +187,45 @@ namespace tradetool
 
                             if (objStop == null)
                             {
-                                string query = "INSERT INTO dbo.ExchangeOrder(PairExchange,CurrentPrice,LimitPrice,StopPrice,Type,Status) VALUES";
-                                query += "(@PairExchange, @CurrentPrice, @LimitPrice, @StopPrice, @Type,@Status)";
+                                string query = "INSERT INTO dbo.ExchangeOrder(PairExchange,CurrentPrice,BuyPrice,StopBuyPrice,Type,Status) VALUES";
+                                query += "(@PairExchange, @CurrentPrice, @BuyPrice, @StopBuyPrice, @Type,@Status)";
                                 repo.Connection.Execute(query
                                     , new
                                     {
-                                        PairExchange = "XRP_USDT",
+                                        PairExchange = "BTC_USDT",
                                         CurrentPrice = price,
-                                        LimitPrice = price + _deltaPrice,
-                                        StopPrice = price + _deltaPrice,
+                                        BuyPrice = price + _deltaPriceBuy,
+                                        StopBuyPrice = price + _deltaPriceBuy,
                                         Type = 1,
                                         Status = "Is Open"
                                     });
                             }
                             else if (objStop.Status == "Is Close")
                             {
-                                Continue = false;
-                                BeginInvoke(new MethodInvoker(delegate
+                                if (objStop.IsPassSellPrice == false && price >= objStop.StopSellPrice)
                                 {
-                                    lblStatus.Text = "đã khớp lên mua ở giá " + objStop.CurrentPrice;
-                                }));
+                                    string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,StopSellPrice=@StopSellPrice,SellPrice=@SellPrice,IsPassSellPrice=true where ID = @ID";
+
+                                    repo.Connection.Execute(query
+                                        , new
+                                        {
+                                            CurrentPrice = price,
+                                            SellPrice = price - _deltaPriceSell,
+                                            StopSellPrice = price,
+                                            ID = objStop.ID
+                                        });
+                                }
                             }
-                            else if (price < objStop.CurrentPrice)
+                            else if (price < objStop.StopBuyPrice)
                             {
-                                string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,LimitPrice = @LimitPrice,StopPrice=@StopPrice where ID = @ID";
+                                string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,BuyPrice = @BuyPrice,StopBuyPrice=@StopBuyPrice where ID = @ID";
 
                                 repo.Connection.Execute(query
                                     , new
                                     {
                                         CurrentPrice = price,
-                                        LimitPrice = price + _deltaPrice,
-                                        StopPrice = price + _deltaPrice,
+                                        BuyPrice = price + _deltaPriceBuy,
+                                        StopBuyPrice = price,
                                         ID = objStop.ID
                                     });
 
@@ -208,7 +242,10 @@ namespace tradetool
                                 source.Add(objStop);
                                 BeginInvoke(new MethodInvoker(delegate
                                 {
-                                    dataGridView1.DataSource = source.ToDataTable<StopLimit>();
+                                    var tableSource = source.ToDataTable<StopLimit>();
+                                    tableSource.Columns.Remove("ID");
+                                    tableSource.Columns.Remove("Type");
+                                    dataGridView1.DataSource = tableSource;
                                     dataGridView1.Refresh();
                                 }));
                             }
@@ -258,7 +295,7 @@ namespace tradetool
             try
             {
                 var rootPolo = Newtonsoft.Json.JsonConvert.DeserializeObject<PoloPrice>(Helpers.GetdataViaproxy("https://poloniex.com/public?command=returnTicker"));
-                _currentPrice = decimal.Parse(rootPolo.USDT_XRP.last);
+                _currentPrice = decimal.Parse(rootPolo.USDT_BTC.last);
                 return (decimal.Parse(rootPolo.USDT_BTC.last));
             }
             catch (Exception ex)
@@ -273,12 +310,16 @@ namespace tradetool
     public class StopLimit
     {
         public int ID { get; set; }
-        public string PairExchange { get; set; }
+
         public decimal CurrentPrice { get; set; }
-        public decimal LimitPrice { get; set; }
-        public decimal StopPrice { get; set; }
+        public decimal StopBuyPrice { get; set; }
+        public decimal BuyPrice { get; set; }
+        public decimal StopSellPrice { get; set; }
         public decimal SellPrice { get; set; }
+        public decimal StopLoss { get; set; }
+        public bool IsPassSellPrice { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
+        public string PairExchange { get; set; }
     }
 }

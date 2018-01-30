@@ -65,10 +65,11 @@ namespace tradetool.Utilities
                 //Get all the properties
                 PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
                 foreach (PropertyInfo prop in Props)
-                {
+                {                    
                     //Defining type of data column gives proper data table 
                     var type = (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType);
                     //Setting column names as Property names
+                    //if(prop.Name != "ID" && prop.Name != "Type")
                     dataTable.Columns.Add(prop.Name, type);
                 }
                 if (data != null)

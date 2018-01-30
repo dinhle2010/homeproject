@@ -120,6 +120,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTradePro.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,11 +134,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\Configs.cs" />
     <Compile Include="Utilities\ConvertHelper.cs" />
     <Compile Include="Utilities\DriverHelper.cs" />
     <Compile Include="Utilities\Helpers.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTradePro.resx">
       <DependentUpon>frmTradePro.cs</DependentUpon>

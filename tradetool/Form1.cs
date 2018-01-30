@@ -346,13 +346,14 @@ namespace tradetool
                         row["OrderBookPercent"] = (_orderBookRootObject.result.buy.Sum(o => o.Quantity) / _orderBookRootObject.result.sell.Sum(o => o.Quantity)) * 100;
                         data.Rows.Add(row);
                         //data.Rows.InsertAt(row, 0);
+                        var deltaOrderBookPercent = decimal.Parse(_lastRow["OrderBookPercent"].ToString()) - decimal.Parse(_firsRow["OrderBookPercent"].ToString());
                         if (data.Rows.Count > 1)
                         {
                             _firsRow = data.Rows[data.Rows.Count - 2];
                             _lastRow = data.Rows[data.Rows.Count - 1];
                             row["DeltaPercent"] = decimal.Parse(_lastRow["Percent"].ToString()) - decimal.Parse(_firsRow["Percent"].ToString());
                             row["DeltaPrice"] = decimal.Parse(_lastRow["CurrentPrice"].ToString()) - decimal.Parse(_firsRow["CurrentPrice"].ToString());
-                            row["DeltaOrderBookPercent"] = decimal.Parse(_lastRow["OrderBookPercent"].ToString()) - decimal.Parse(_firsRow["OrderBookPercent"].ToString());
+                            row["DeltaOrderBookPercent"] = deltaOrderBookPercent;
                         }
 
                         BeginInvoke(new MethodInvoker(delegate
@@ -361,6 +362,7 @@ namespace tradetool
                             {
                                 dataGridView1.DataSource = data;
                                 dataGridView1.Refresh();
+                                Configs.DeltaPercent = deltaOrderBookPercent;
                             }
                             catch (Exception ex)
                             { }
@@ -440,7 +442,7 @@ namespace tradetool
                     //}
 
                     //get trade history
-                    response =Helpers.GetdataViaproxy(txtURL.Text);
+                    response = Helpers.GetdataViaproxy(txtURL.Text);
 
                     List<Polo> rootPolo = null;
                     if (_rootPolo == null)
@@ -472,6 +474,7 @@ namespace tradetool
                     row["DateTime"] = DateTime.Now;
                     row["OrderBookPercent"] = (bids.Sum(o => ConvertHelper.ToDecimal(o.Last().ToString())) / asks.Sum(o => ConvertHelper.ToDecimal(o.Last().ToString()))) * 100;
                     data.Rows.Add(row);
+                    decimal deltaOrderBookPercent = 0;
                     //data.Rows.InsertAt(row, 0);
                     if (data.Rows.Count > 1)
                     {
@@ -479,7 +482,8 @@ namespace tradetool
                         _lastRow = data.Rows[data.Rows.Count - 1];
                         row["DeltaPercent"] = decimal.Parse(_lastRow["Percent"].ToString()) - decimal.Parse(_firsRow["Percent"].ToString());
                         row["DeltaPrice"] = decimal.Parse(_lastRow["CurrentPrice"].ToString()) - decimal.Parse(_firsRow["CurrentPrice"].ToString());
-                        row["DeltaOrderBookPercent"] = decimal.Parse(_lastRow["OrderBookPercent"].ToString()) - decimal.Parse(_firsRow["OrderBookPercent"].ToString());
+                        deltaOrderBookPercent = decimal.Parse(_lastRow["OrderBookPercent"].ToString()) - decimal.Parse(_firsRow["OrderBookPercent"].ToString());
+                        row["DeltaOrderBookPercent"] = deltaOrderBookPercent;
                     }
 
 
@@ -550,8 +554,8 @@ namespace tradetool
             switch (selectedValue)
             {
                 case "USDT_XRP_Polo":
-                    txtOrderbook.Text = "https://poloniex.com/public?command=returnOrderBook&currencyPair=USDT_XRP&depth=10000";
-                    txtURL.Text = "https://poloniex.com/public?command=returnTradeHistory&currencyPair=USDT_XRP";
+                    txtOrderbook.Text = "https://poloniex.com/public?command=returnOrderBook&currencyPair=USDT_BTC&depth=10000";
+                    txtURL.Text = "https://poloniex.com/public?command=returnTradeHistory&currencyPair=USDT_BTC";
                     break;
                 case "USDT_XRP_Bittrex":
                     txtOrderbook.Text = "https://bittrex.com/api/v1.1/public/getorderbook?market=USDT-XRP&type=both";
@@ -567,7 +571,7 @@ namespace tradetool
         private void btnBalance_Click(object sender, EventArgs e)
         {
             MessageBox.Show(PostViaProxy(string.Empty));
-            
+
         }
     }
 }
