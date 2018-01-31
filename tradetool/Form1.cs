@@ -362,7 +362,7 @@ namespace tradetool
                             {
                                 dataGridView1.DataSource = data;
                                 dataGridView1.Refresh();
-                                Configs.DeltaPercent = deltaOrderBookPercent;
+                                Configs.OrderBookPercent = deltaOrderBookPercent;
                             }
                             catch (Exception ex)
                             { }
@@ -472,7 +472,8 @@ namespace tradetool
                     row["MaxBuyQuantity"] = string.Format(new CultureInfo("en-US", false), "{0:n}", rootPolo.Where(o => o.type == "buy").Max(o => decimal.Parse(o.amount)));
                     row["MaxSellQuantity"] = string.Format(new CultureInfo("en-US", false), "{0:n}", rootPolo.Where(o => o.type == "sell").Max(o => decimal.Parse(o.amount)));
                     row["DateTime"] = DateTime.Now;
-                    row["OrderBookPercent"] = (bids.Sum(o => ConvertHelper.ToDecimal(o.Last().ToString())) / asks.Sum(o => ConvertHelper.ToDecimal(o.Last().ToString()))) * 100;
+                    decimal OrderBookPercent = (bids.Sum(o => ConvertHelper.ToDecimal(o.Last().ToString())) / asks.Sum(o => ConvertHelper.ToDecimal(o.Last().ToString()))) * 100;
+                    row["OrderBookPercent"] = OrderBookPercent;
                     data.Rows.Add(row);
                     decimal deltaOrderBookPercent = 0;
                     //data.Rows.InsertAt(row, 0);
@@ -492,6 +493,7 @@ namespace tradetool
                         dataGridView1.DataSource = data;
                         dataGridView1.Refresh();
                         btnStart.Enabled = true;
+                        Configs.OrderBookPercent = OrderBookPercent;
                     }));
 
                 }

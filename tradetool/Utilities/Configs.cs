@@ -8,6 +8,6 @@ namespace tradetool.Utilities
 {
     public static class Configs
     {
-        public static decimal DeltaPercent { get; set; }
+        public static decimal OrderBookPercent { get; set; }
     }
 }

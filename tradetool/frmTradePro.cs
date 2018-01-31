@@ -74,7 +74,7 @@ namespace tradetool
                         if (objStop?.Status == "Is Open" && objStop.Type == "1")
                         {
 
-                            if (price >= objStop.BuyPrice && Configs.DeltaPercent > 0)
+                            if (price >= objStop.BuyPrice && Configs.OrderBookPercent > 0)
                             {
                                 //cập nhat trang thái về close báo đã khớp lện mua
                                 string query = "update dbo.ExchangeOrder set CurrentPrice=@CurrentPrice,Status=@Status,SellPrice=@SellPrice,StopSellPrice=@StopSellPrice,StopLoss=@StopLoss where ID = @ID";
